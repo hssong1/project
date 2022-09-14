@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<th:block th:fragment="topbar">
+    <script defer type="text/javascript" src="/js/UserAjax.js"></script>
+    <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+            <!-- Sidebar Toggle (Topbar) -->
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+
+            <!-- Topbar Navbar -->
+            <ul class="navbar-nav ml-auto">
+            
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <!-- 변수로 사용자 이름 받기  -->
+                     	<span class="mr-2 d-none d-lg-inline text-gray-600 small" th:text="${userName}"></span>                        
+                        
+                        <!-- 변수로 사용자 이미지 받기 없을 경우 Default 이미지 출력 -->
+                        <img class="img-profile rounded-circle" src="/bootstrap/img/symbolmark.jpg">
+                    </a>
+                    <!-- Dropdown - User Information -->
+                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                        aria-labelledby="userDropdown">
+                        <!--  
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#MyInformationModal" onclick="handleOpenMyInformation()">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>내정보수정</span>
+                        </a>
+                        -->
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <span>로그아웃</span>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="modal fade" id="MyInformationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel">내정보수정</h5>
+	                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">×</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">
+	                	<div class="mb-1">
+	                    	<input type="text" class="form-control" id="userNumber" aria-describedby="userNumber" placeholder="사번을 입력하세요." disabled th:value="${userId}">
+	                    </div>
+	                    <div class="mb-1">
+	                    	<input type="text" class="form-control" id="userName" aria-describedby="userName" placeholder="이름을 입력하세요." disabled th:value="${userName}">
+	                	</div>
+	                	<div class="mb-2">
+	                		<input type="email" class="form-control" id="userEmail" aria-describedby="userEmail" placeholder="이메일을 입력하세요." th:value="${userEmail}">
+	                	</div>
+	                	<div class="custom-control custom-checkbox small">
+                            <input type="checkbox" class="custom-control-input" id="userEmailCheck" th:checked="${userEmailCheck == 'Y'}">
+                            <label class="custom-control-label" for="userEmailCheck">
+                            	<span>타사 크롤링 정보에 대한 이메일 수신을 동의하겠습니다.</span>
+                            </label>
+                        </div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+	                    <button class="btn btn-primary" type="button" onclick="handleMyInformation()">수정하기</button>
+	                </div>
+	            </div>
+	        </div>
+    	</div>
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	        <div class="modal-dialog" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel">로그아웃을 하시겠습니까?</h5>
+	                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">×</span>
+	                    </button>
+	                </div>
+	                <div class="modal-body">접속을 종료하기 위해 로그아웃 버튼을 눌러주세요.</div>
+	                <div class="modal-footer">
+	                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+	                    <button class="btn btn-primary" type="button" onclick="handleLogout()">로그아웃</button>
+	                </div>
+	            </div>
+	        </div>
+    	</div>
+</th:block>
+</html>

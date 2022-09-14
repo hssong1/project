@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.nice.crawler.mapper.CrawlerHistoryMapper">
+  
+  <!--크롤링 수동처리 이력 데이터 시작시간 삽입-->
+  <insert id="updateStartTime">
+	INSERT INTO TSPPA97H
+	(
+		SEQ
+		,START_TIME
+		,FLAG
+		,GUBUN
+		,CREA_ID
+	)
+	VALUES
+	(
+		(SELECT NVL(MAX(SEQ)+1,1) FROM TSPPA97H WHERE GUBUN = #{gubun})
+		,#{startTime}
+		,#{state}
+		,#{gubun}
+		,#{creaId}
+	)
+  </insert>
+  
+  <!--크롤링 수동처리 이력 데이터 끝나는 시간 업데이트-->
+  <update id="updateEndTime">
+    UPDATE TSPPA97H 
+       SET END_TIME = ${endTime}
+          ,FLAG = #{state} 
+     WHERE SEQ = (SELECT MAX(SEQ) FROM TSPPA97H WHERE GUBUN = #{gubun}) 
+  </update>
+  
+  <!--크롤링 수동처리 이력 데이터 끝났는 지 확인하기-->
+  <select id="checkEndTime" resultType="String">
+    SELECT FLAG 
+      FROM TSPPA97H
+     WHERE SEQ = (SELECT MAX(SEQ) FROM TSPPA97H WHERE GUBUN = #{gubun})
+       AND GUBUN = #{gubun} 
+  </select>
+</mapper>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/admin-layout.html}">
+
+	<th:block layout:fragment="content">
+		
+		<script defer type="text/javascript" src="/js/admin/adminDartCrawling.js"></script>
+		
+	    <div class="container-fluid" id="mailListMenu">
+	    
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">                      
+                        <h1 class="h3 mb-0 text-gray-800">
+	                        <i class="fas fa-fw fa-list"></i>
+	                        <span>금감원 크롤링 수동처리</span>
+                        </h1>
+                    </div>	
+      
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Content Column -->
+                        <div class="col-lg-12 mb-4">
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-2">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">금감원 크롤링 수동처리</h6>
+                                </div>
+                                <div class="card-body">
+			                        	<div class="input-group mb-3 mr-1" style="width: 50%; float:left;">
+											<span class="input-group-text">시작일 / 종료일</span>
+			                            	<input type="date" class="form-control bg-light border-1 small mr-1" aria-label="StartDate_search" aria-describedby="start-date_search" th:name="startDate_search" id="startDate_search" name="startDate_search">
+  			                            	<input type="date" class="form-control bg-light border-1 small" aria-label="EndDate_search" aria-describedby="end-date_search" th:name="endDate_search" id="endDate_search" name="endDate_search">
+										</div>
+				                        <div>
+					                        <button class="btn btn-primary border" type="button" onclick="checkAvailable()">수동처리</button>
+					                        <button class="btn btn-primary border" type="button" onclick="checkEndTime()">확인</button>
+			                        	</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+	</th:block>
+	
+</html>

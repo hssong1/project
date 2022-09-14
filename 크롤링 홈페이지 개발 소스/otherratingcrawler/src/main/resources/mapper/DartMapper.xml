@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.nice.crawler.mapper.DartMapper">
+  <!--금감원 크롤링 조회-->
+  <select id="findDartList" resultType="com.nice.crawler.model.Dart">
+    SELECT * 
+      FROM TSPPA99M
+     WHERE 1 = 1
+    <if test="startDate!=null and startDate!='' and endDate!=null and endDate!=''">
+       AND PUB_ANUC_DATE BETWEEN #{startDate} AND #{endDate}
+    </if>
+     ORDER BY SEQ
+  </select>
+  
+  <!--키값으로 있는지 없는지 조회-->
+  <select id="checkDartList" resultType="com.nice.crawler.model.Dart">
+    SELECT *
+      FROM TSPPA99M
+     WHERE 1 = 1
+    <if test="seq!=null and seq!=''">
+       AND SEQ = #{sequence}
+    </if>
+     ORDER BY SEQ
+  </select>
+  
+  <!-- 금감원 크롤링 수동처리-->
+  <insert id="insertDartList" parameterType="com.nice.crawler.model.Dart">
+		INSERT INTO TSPPA99M
+		(
+			SEQ
+			<if test="ratgCom!=null and ratgCom!=''">
+				,RATG_COM
+			</if>
+			<if test="corpRgno!=null and corpRgno!=''">
+				,CORP_RGNO
+			</if>
+			<if test="bizNo!=null and bizNo!=''">
+				,BIZ_NO
+			</if>
+			<if test="ratgTrgtCom!=null and ratgTrgtCom!=''">
+				,RATG_TRGT_COM
+			</if>
+			<if test="ratgMthd!=null and ratgMthd!=''">
+				,RATG_MTHD
+			</if>
+			<if test="ratgTrgtKind!=null and ratgTrgtKind!=''">
+				,RATG_TRGT_KIND
+			</if>
+			<if test="isueAmt!=null and isueAmt!=''">
+				,ISUE_AMT
+			</if>
+			<if test="isueDate!=null and isueDate!=''">
+				,ISUE_DATE
+			</if>
+			<if test="expiDate!=null and expiDate!=''">
+				,EXPI_DATE
+			</if>
+			<if test="ctrtCntcDate!=null and ctrtCntcDate!=''">
+				,CTRT_CNTC_DATE
+			</if>
+			<if test="ctrtExprFeeDate!=null and ctrtExprFeeDate!=''">
+				,CTRT_EXPR_FEE_DATE
+			</if>
+			<if test="lastExpiDate!=null and lastExpiDate!=''">
+				,LAST_EXPI_DATE
+			</if>
+			<if test="ratgDivd!=null and ratgDivd!=''">
+				,RATG_DIVD
+			</if>
+			<if test="pubAnucDate!=null and pubAnucDate!=''">
+				,PUB_ANUC_DATE
+			</if>
+			<if test="fincShetStndDate!=null and fincShetStndDate!=''">
+				,FINC_SHET_STND_DATE
+			</if>
+			<if test="rankConfDate!=null and rankConfDate!=''">
+				,RANK_CONF_DATE
+			</if>
+			<if test="rankVadtDate!=null and rankVadtDate!=''">
+				,RANK_VADT_DATE
+			</if>
+			<if test="ratgRank!=null and ratgRank!=''">
+				,RATG_RANK
+			</if>
+			<if test="prevRatgRank!=null and prevRatgRank!=''">
+				,PREV_RATG_RANK
+			</if>
+			<if test="crdtWatch!=null and crdtWatch!=''">
+				,CRDT_WACH
+			</if>
+			<if test="crdtOtlk!=null and crdtOtlk!=''">
+				,RATG_OTLK
+			</if>
+			<if test="atchFileUrl!=null and atchFileUrl!=''">
+				,ATCH_FILE_URL
+			</if>
+			<if test="atchFileName!=null and atchFileName!=''">
+				,ATCH_FILE_NAME
+			</if>
+			<if test="rmks!=null and rmks!=''">
+				,RMKS
+			</if>
+			<if test="crReptSeq!=null and crReptSeq!=''">
+				,CR_REPT_SEQ
+			</if>
+				,CREA_ID
+				,CREA_DTME
+		)
+		VALUES
+		(
+			#{seq}
+			<if test="ratgCom!=null and ratgCom!=''">
+				,#{ratgCom}
+			</if>
+			<if test="corpRgno!=null and corpRgno!=''">
+				,#{corpRgno}
+			</if>
+			<if test="bizNo!=null and bizNo!=''">
+				,#{bizNo}
+			</if>
+			<if test="ratgTrgtCom!=null and ratgTrgtCom!=''">
+				,#{ratgTrgtCom}
+			</if>
+			<if test="ratgMthd!=null and ratgMthd!=''">
+				,#{ratgMthd}
+			</if>
+			<if test="ratgTrgtKind!=null and ratgTrgtKind!=''">
+				,#{ratgTrgtKind}
+			</if>
+			<if test="isueAmt!=null and isueAmt!=''">
+				,#{isueAmt}
+			</if>
+			<if test="isueDate!=null and isueDate!=''">
+				,#{isueDate}
+			</if>
+			<if test="expiDate!=null and expiDate!=''">
+				,#{expiDate}
+			</if>
+			<if test="ctrtCntcDate!=null and ctrtCntcDate!=''">
+				,#{ctrtCntcDate}
+			</if>
+			<if test="ctrtExprFeeDate!=null and ctrtExprFeeDate!=''">
+				,#{ctrtExprFeeDate}
+			</if>
+			<if test="lastExpiDate!=null and lastExpiDate!=''">
+				,#{lastExpiDate}
+			</if>
+			<if test="ratgDivd!=null and ratgDivd!=''">
+				,#{ratgDivd}
+			</if>
+			<if test="pubAnucDate!=null and pubAnucDate!=''">
+				,#{pubAnucDate}
+			</if>
+			<if test="fincShetStndDate!=null and fincShetStndDate!=''">
+				,#{fincShetStndDate}
+			</if>
+			<if test="rankConfDate!=null and rankConfDate!=''">
+				,#{rankConfDate}
+			</if>
+			<if test="rankVadtDate!=null and rankVadtDate!=''">
+				,#{rankVadtDate}
+			</if>
+			<if test="ratgRank!=null and ratgRank!=''">
+				,#{ratgRank}
+			</if>
+			<if test="prevRatgRank!=null and prevRatgRank!=''">
+				,#{prevRatgRank}
+			</if>
+			<if test="crdtWatch!=null and crdtWatch!=''">
+				,#{crdtWatch}
+			</if>
+			<if test="crdtOtlk!=null and crdtOtlk!=''">
+				,#{crdtOtlk}
+			</if>
+			<if test="atchFileUrl!=null and atchFileUrl!=''">
+				,#{atchFileUrl}
+			</if>
+			<if test="atchFileName!=null and atchFileName!=''">
+				,#{atchFileName}
+			</if>
+			<if test="rmks!=null and rmks!=''">
+				,#{rmks}
+			</if>
+			<if test="crReptSeq!=null and crReptSeq!=''">
+				,#{crReptSeq}
+			</if>
+				,#{creaId}
+				,SYSDATE
+		)
+	</insert>
+
+</mapper>

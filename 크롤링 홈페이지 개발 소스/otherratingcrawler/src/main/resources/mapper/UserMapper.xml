@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.nice.crawler.mapper.UserMapper">
+  <!--회원 확인-->
+  <select id="getUser" resultType="com.nice.crawler.model.User">
+    SELECT * 
+      FROM TOREP01M
+     WHERE 1 = 1
+       AND EMP_NO = #{empNo}
+  </select>
+  
+  <!-- 회원 회원가입 -->
+  <insert id="insertUser" parameterType="map">
+  	INSERT
+  	  INTO TOREP01M(
+  	  	  EMP_NO
+  	  	, EMP_NAME
+  	  	, EMAIL
+  	  	, EMAIL_CHECK
+  	  	, ROLE
+  	  )
+  	VALUES(
+  	  	  #{empNo}
+  	  	, #{empName}
+  	  	, #{email}
+  	  	, #{emailCheck}
+  	  	, 'USER'
+  	)
+  </insert>
+  
+  <!--리프레시 토큰 업데이트-->
+  <update id="updateUserRefreshToken" parameterType="map">
+    UPDATE TOREP01M
+       SET REFRESH_TOKEN = #{refreshToken}
+     WHERE 1 = 1
+       AND EMP_NO = #{empNo}
+  </update>
+  
+  <!--회원 조회-->
+  <select id="getUserList" resultType="com.nice.crawler.model.User">
+    SELECT * 
+      FROM TOREP01M
+     WHERE 1 = 1
+    <if test="searchType!=null and searchType!=''">
+       <if test="searchType=='companynumber'">
+       	 AND EMP_NO LIKE '%'||#{keyword}||'%'
+       </if>
+       <if test="searchType=='name'">
+       	 AND EMP_NAME LIKE '%'||#{keyword}||'%'
+       </if>
+       <if test="searchType=='email'">
+       	 AND EMAIL LIKE '%'||#{keyword}||'%'
+       </if>
+    </if>
+     ORDER BY EMP_NO DESC
+  </select>  
+  
+  <!--메일을 전송할 회원 조회-->
+  <select id="getUserListToSendMail" resultType="com.nice.crawler.model.User">
+    SELECT * 
+      FROM TOREP01M
+     WHERE 1 = 1
+       AND EMAIL_CHECK = 'Y'
+     ORDER BY EMP_NO DESC
+  </select>  
+  
+  <!--회원 업데이트-->
+  <update id="updateUser" parameterType="map">
+    UPDATE TOREP01M 
+       SET EMP_NO = ${empNo}
+       <if test="role!=null and role!=''">
+       	  ,ROLE = #{role}
+       </if>
+       <if test="emailCheck!=null and emailCheck!=''">
+       	  ,EMAIL_CHECK = #{emailCheck}
+       </if>
+       <if test="emailDtme!=null and emailDtme!=''">
+       	  ,EMAIL_DTME = #{emailDtme}
+       </if> 
+     WHERE EMP_NO = #{empNo}
+  </update>
+  
+  <!--회원정보 업데이트-->
+  <update id="updateUserInformation">
+    UPDATE TOREP01M 
+       SET EMP_NO = ${empNo}
+       <if test="emailCheck!=null and emailCheck!=''">
+       	  ,EMAIL_CHECK = #{emailCheck}
+       </if>
+       <if test="email!=null and email!=''">
+       	  ,EMAIL = #{email}
+       </if> 
+     WHERE EMP_NO = #{empNo}
+  </update>
+  
+  <!--회원 확인-->
+  <select id="checkUserList" resultType="com.nice.crawler.model.User">
+    SELECT * 
+      FROM TOREP01M
+     WHERE 1 = 1
+       AND EMP_NO LIKE '%'||#{value}||'%'
+     ORDER BY EMP_NO DESC
+  </select>
+</mapper>

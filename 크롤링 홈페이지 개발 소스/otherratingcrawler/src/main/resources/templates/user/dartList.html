@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/user-layout.html}">
+	
+	<th:block layout:fragment="content">
+	
+		<script defer type="text/javascript" src="/js/admin/adminDartList.js"></script>
+		
+		<script>
+		
+			window.onload = function () {
+		    	document.querySelector("#startDate_search").value = moment().subtract(1,'days').format('YYYY-MM-DD');
+		    	document.querySelector("#endDate_search").value = moment().subtract(1,'days').format('YYYY-MM-DD');
+			}
+	
+		</script>
+
+	    <!-- Begin Page Content -->
+	    <div class="container-fluid" id="crawlerListMenu">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">                      
+                        <h1 class="h3 mb-0 text-gray-800">
+                        	<!-- 아이콘 변경 예정 -->
+	                        <i class="fas fa-fw fa-list"></i>
+	                        <span>금감원 크롤링 조회</span>
+                        </h1>
+                    </div>
+      
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Content Column -->
+                        <div class="col-lg-12 mb-4">
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-2">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">금감원 크롤링 목록</h6>
+                                </div>
+                                <div class="card-body">
+			                        <div class="input-group mb-3 mr-1" style="width: 50%; float:left;">
+                                		<span class="input-group-text">조회기간 (기준:공시일)</span>
+			                            <input type="date" class="form-control bg-light border-1 small mr-1" aria-label="StartDate_search" aria-describedby="start-date_search" th:name="startDate_search" id="startDate_search" name="startDate_search">
+  			                            <input type="date" class="form-control bg-light border-1 small" aria-label="EndDate_search" aria-describedby="end-date_search" th:name="endDate_search" id="endDate_search" name="endDate_search">		                            
+			                        </div>
+			                        <div>
+				                        <button class="btn btn-primary border" type="button" onclick="dartSearch()">검색하기</button>
+				                        <button class="btn btn-primary border" type="button" onclick="excelExport(event)">엑셀 Export</button>
+			                        </div>
+                                </div>
+                            </div>
+							<div class="card shadow mb-4">
+                                <div class="card-body">
+	                                <div data-ax5grid="dart-grid" data-ax5grid-config="{}" style="height: 500px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+	</th:block>
+	
+</html>

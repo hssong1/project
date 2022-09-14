@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/manager-layout.html}">
+	
+	<th:block layout:fragment="content">
+	
+		<script defer type="text/javascript" src="/js/admin/adminCrawlerList.js"></script>
+
+		<script>
+		
+			window.onload = function () {
+		    	document.querySelector("#startDate_search").value = moment().day(-6).format('YYYY-MM-DD');
+		    	document.querySelector("#endDate_search").value = moment().day(-2).format('YYYY-MM-DD');
+			}
+	
+		</script>
+	
+	    <!-- Begin Page Content -->
+	    <div class="container-fluid" id="crawlerListMenu">
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">                      
+                        <h1 class="h3 mb-0 text-gray-800">
+                        	<!-- 아이콘 변경 예정 -->
+	                        <i class="fas fa-fw fa-list"></i>
+	                        <span>타사 크롤링 조회</span>
+                        </h1>
+                    </div>
+      
+                    <!-- Content Row -->
+                    <div class="row">
+                        <!-- Content Column -->
+                        <div class="col-lg-12 mb-4">
+                            <!-- Project Card Example -->
+                            <div class="card shadow mb-2">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">타사 크롤링 목록</h6>
+                                </div>
+                        		<div class="card-body">
+			                        <div class="input-group mb-1">
+			                        	<div class="input-group mb-2" style="float: left; width:25%">
+			                            	<span class="input-group-text">회사유형</span>
+				                            <div class="form-control bg-light small ml-1" style="text-align: left;">
+				                                <div class="form-check form-check-inline">
+				                                    <input class="form-check-input" type="checkbox" th:name="crprvid" id="crprvid" value="KIS">
+				                                    <label class="form-check-label" for="crpvid1">KIS</label>
+				                                </div>
+				                                <div class="form-check form-check-inline">
+				                                    <input class="form-check-input" type="checkbox" th:name="crprvid" id="crprvid" value="KR">
+				                                    <label class="form-check-label" for="crpvid2">KR</label>
+				                                </div>
+				                                <div class="form-check form-check-inline">
+				                                    <input class="form-check-input" type="checkbox" th:name="crprvid" id="crprvid" value="SCRI">
+				                                    <label class="form-check-label" for="crpvid3">SCRI</label>
+				                                </div>
+				                            </div>
+			                            </div>
+			                        <form action="/api/excel">
+			                            <div class="input-group mb-2" style="padding-left: 5px; float:left;">
+			                                <span class="input-group-text">조회기간 (기준:등급확정일)</span>
+			                                <input type="date" class="form-control bg-light border-1 small mr-1 ml-1" aria-label="StartDate_search" aria-describedby="start-date_search" th:name="startDate_search" id="startDate_search" name="startDate_search">
+			                                <input type="date" class="form-control bg-light border-1 small" aria-label="EndDate_search" aria-describedby="end-date_search" th:name="endDate_search" id="endDate_search" name="endDate_search">
+			                                <div style="text-align: right; padding-left: 5px">
+			                                	<button class="btn btn-primary border" type="button" onclick="handling()">검색하기</button>
+			                                	<button class="btn btn-primary border" type="submit">엑셀 Export</button>
+			                                </div>
+			                            </div>
+			                        </form>
+			                        </div>
+			                    </div>
+                            </div>
+							<div class="card shadow mb-4">
+                                <div class="card-body">
+	                                <div data-ax5grid="otherRating-grid" data-ax5grid-config="{}" style="height: 500px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+	</th:block>
+</html>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.nice.crawler.mapper.CrawlerMapper">
+  <!--타사크롤링 조회-->
+  <select id="findCrawlerList" resultType="com.nice.crawler.model.Crawler">
+    SELECT SEQ
+          ,CRPRVID
+          ,(TO_CHAR(TO_DATE(RATE_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS RANK_CONF_DATE
+          ,CMP_CD
+          ,CMP_NM
+          ,CR_TYP
+          ,SECU_TYP
+          ,CASE WHEN CR_TYP = '본' THEN '1'
+                WHEN CR_TYP = '정기' THEN '2'
+                WHEN CR_TYP = '수시' THEN '3'
+                ELSE CR_TYP
+            END CR_TYP_NUMBER
+          ,BOND_TYP
+          ,RANK || WATCH AS RANK
+          ,CASE WHEN OUTLOOK = '안정적' THEN 'Stable'
+				WHEN OUTLOOK = '부정적' THEN 'Negative'
+				WHEN OUTLOOK = '긍정적' THEN 'Positive'
+				WHEN OUTLOOK = '없음' THEN ''
+				WHEN OUTLOOK IS NULL THEN '' 
+				ELSE OUTLOOK 
+		   END OUTLOOK
+          ,ISSUE_NO
+          ,ISSUE_AMT
+          ,ISSUE_AMT_TYP
+          ,(TO_CHAR(TO_DATE(ISSUE_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS ISSUE_DATE
+          ,(TO_CHAR(TO_DATE(MATU_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS MATU_DATE
+          ,(TO_CHAR(TO_DATE(RULE_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS RULE_DATE
+          ,SERIES
+          ,EXPOSE_TYP
+          ,REL_CMP_NM
+      FROM TSPPA98M
+     WHERE 1 = 1
+       <if test="crprvid!=null and crprvid!=''"> 
+       AND CRPRVID IN
+       	<foreach collection="crprvid" item="crprvid" open="(" close=")" separator=",">
+       		#{crprvid}
+       	</foreach>
+       </if>
+       <if test="company!=null and company!=''"> 
+       AND CRPRVID = #{company}
+       </if>
+       <if test="startDate!=null and startDate!='' and endDate!=null and endDate!=''">
+       AND RATE_DATE BETWEEN #{startDate} AND #{endDate}
+       </if>
+       <if test="secuTyp!=null and secuTyp!=''">
+       AND SECU_TYP = #{secuTyp}
+       </if>
+     ORDER BY CR_TYP_NUMBER, CMP_NM, ISSUE_NO
+  </select>
+  
+  <!--타사크롤링 수동처리 조회-->
+  <select id="findAfterCrawlerList" resultType="com.nice.crawler.model.Crawler">
+    SELECT SEQ
+          ,CRPRVID
+          ,(TO_CHAR(TO_DATE(RATE_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS RANK_CONF_DATE
+          ,CMP_CD
+          ,CMP_NM
+          ,CR_TYP
+          ,SECU_TYP
+          ,CASE WHEN CR_TYP = '본' THEN '1'
+                WHEN CR_TYP = '정기' THEN '2'
+                WHEN CR_TYP = '수시' THEN '3'
+                ELSE CR_TYP
+            END CR_TYP_NUMBER
+          ,BOND_TYP
+          ,RANK || WATCH AS RANK
+          ,CASE WHEN OUTLOOK = '안정적' THEN 'Stable'
+				WHEN OUTLOOK = '부정적' THEN 'Negative'
+				WHEN OUTLOOK = '긍정적' THEN 'Positive'
+				WHEN OUTLOOK = '없음' THEN ''
+				WHEN OUTLOOK IS NULL THEN '' 
+				ELSE OUTLOOK 
+		   END OUTLOOK
+          ,ISSUE_NO
+          ,ISSUE_AMT
+          ,ISSUE_AMT_TYP
+          ,(TO_CHAR(TO_DATE(ISSUE_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS ISSUE_DATE
+          ,(TO_CHAR(TO_DATE(MATU_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS MATU_DATE
+          ,(TO_CHAR(TO_DATE(RULE_DATE,'YYYYMMDD'), 'YYYY-MM-DD')) AS RULE_DATE
+          ,SERIES
+          ,EXPOSE_TYP
+          ,REL_CMP_NM
+      FROM TSPPA97M
+     WHERE 1 = 1
+     <if test="crprvid!=null and crprvid!=''"> 
+       AND CRPRVID IN
+       	<foreach collection="crprvid" item="crprvid" open="(" close=")" separator=",">
+       		#{crprvid}
+       	</foreach>
+     </if>
+       <if test="company!=null and company!=''"> 
+       AND CRPRVID = #{company}
+       </if>
+    <if test="startDate!=null and startDate!='' and endDate!=null and endDate!=''">
+       AND RATE_DATE BETWEEN #{startDate} AND #{endDate}
+    </if>
+    <if test="secuTyp!=null and secuTyp!=''">
+       AND SECU_TYP = #{secuTyp}
+    </if>
+     ORDER BY CR_TYP_NUMBER, CMP_NM, ISSUE_NO
+  </select>
+  
+  <!--크롤링 데이터 삭제-->
+  <delete id="deleteCrawlerData">
+	DELETE FROM TSPPA98M
+	 WHERE PUB_ANUC_DATE BETWEEN #{startDate} AND #{endDate}
+       AND CRPRVID IN 
+       <foreach collection="crprvid" item="crprvid" open="(" close=")" separator=",">
+			#{crprvid}
+       </foreach>
+  </delete>
+  
+  <!--크롤링 수동처리 데이터 삭제-->
+  <delete id="deleteAfterCrawlerData">
+	DELETE FROM TSPPA97M
+	 WHERE PUB_ANUC_DATE BETWEEN #{startDate} AND #{endDate}
+       AND CRPRVID IN 
+       <foreach collection="crprvid" item="crprvid" open="(" close=")" separator=",">
+			#{crprvid}
+       </foreach>
+  </delete>
+  
+  <!--크롤링 데이터 삭제-->
+  <delete id="deleteCrawlingData">
+	DELETE FROM TSPPA98M
+	 WHERE PUB_ANUC_DATE BETWEEN #{startDate} AND #{endDate}
+	   AND CRPRVID IN 
+       <foreach collection="crprvid" item="crprvid" open="(" close=")" separator=",">
+       		#{crprvid}
+       </foreach>
+  </delete>
+  
+  <!--크롤링 데이터 삽입-->
+  <insert id="InsertCrawlerList" parameterType="com.nice.crawler.model.Crawler">
+		INSERT INTO TSPPA98M
+		(
+			SEQ
+			,CRPRVID
+			,RATE_DATE
+			,PUB_ANUC_DATE
+			,CMP_CD
+			,CMP_NM
+			,CR_TYP
+			,SECU_TYP
+			,BOND_TYP
+			<if test="rank!=null and rank!=''">
+				,RANK
+			</if>
+			<if test="watch!=null and watch!=''">
+				,WATCH
+			</if>
+			<if test="outlook!=null and outlook!=''">
+				,OUTLOOK
+			</if>
+			<if test="issueNo!=null and issueNo!=''">
+				,ISSUE_NO
+			</if>
+			<if test="issueAmt!=null and issueAmt!=''">
+				,ISSUE_AMT
+			</if>
+			<if test="issueAmtTyp!=null and issueAmtTyp!=''">
+				,ISSUE_AMT_TYP
+			</if>
+			<if test="issueDate!=null and issueDate!=''">
+				,ISSUE_DATE
+			</if>
+			<if test="matuDate!=null and matuDate!=''">
+				,MATU_DATE
+			</if>
+			<if test="ruleDate!=null and ruleDate!=''">
+				,RULE_DATE
+			</if>
+			<if test="series!=null and series!=''">
+				,SERIES
+			</if>
+			<if test="exposeTyp!=null and exposeTyp!=''">
+				,EXPOSE_TYP
+			</if>
+			<if test="relCmpNm!=null and relCmpNm!=''">
+				,REL_CMP_NM
+			</if>
+				,CREA_DTME
+				,CREA_ID
+		)
+		VALUES
+		(
+			(SELECT NVL(MAX(SEQ)+1,1) FROM TSPPA98M)
+			,#{crprvid}
+			,#{rankConfDate}
+			,#{pubAnucDate}
+			,#{cmpCd}
+			,#{cmpNm}
+			,#{crTyp}
+			,#{secuTyp}
+			,#{bondTyp}
+			<if test="rank!=null and rank!=''">
+				,#{rank}
+			</if>
+			<if test="watch!=null and watch!=''">
+				,#{watch}
+			</if>
+			<if test="outlook!=null and outlook!=''">
+				,#{outlook}
+			</if>
+			<if test="issueNo!=null and issueNo!=''">
+				,#{issueNo}
+			</if>
+			<if test="issueAmt!=null and issueAmt!=''">
+				,#{issueAmt}
+			</if>
+			<if test="issueAmtTyp!=null and issueAmtTyp!=''">
+				,#{issueAmtTyp}
+			</if>
+			<if test="issueDate!=null and issueDate!=''">
+				,#{issueDate}
+			</if>
+			<if test="matuDate!=null and matuDate!=''">
+				,#{matuDate}
+			</if>
+			<if test="ruleDate!=null and ruleDate!=''">
+				,#{ruleDate}
+			</if>
+			<if test="series!=null and series!=''">
+				,#{series}
+			</if>
+			<if test="exposeTyp!=null and exposeTyp!=''">
+				,#{exposeTyp}
+			</if>
+			<if test="relCmpNm!=null and relCmpNm!=''">
+				,#{relCmpNm}
+			</if>
+				,SYSDATE
+				,#{creaId}
+		)
+  </insert>
+  
+  <!--크롤링 수동처리 데이터 삭제-->
+  <delete id="deleteAfterCrawlingData">
+	DELETE FROM TSPPA97M
+	 WHERE RATE_DATE BETWEEN #{startDate} AND #{endDate}
+	   AND CRPRVID IN 
+       <foreach collection="crprvid" item="crprvid" open="(" close=")" separator=",">
+       		#{crprvid}
+       </foreach>
+  </delete>
+  
+  <!--크롤링 수동처리 데이터 삽입-->
+  <insert id="InsertAfterCrawlerList" parameterType="com.nice.crawler.model.Crawler">
+		INSERT INTO TSPPA97M
+		(
+			SEQ
+			,CRPRVID
+			,RATE_DATE
+			,PUB_ANUC_DATE
+			,CMP_CD
+			,CMP_NM
+			,CR_TYP
+			,SECU_TYP
+			,BOND_TYP
+			<if test="rank!=null and rank!=''">
+				,RANK
+			</if>
+			<if test="watch!=null and watch!=''">
+				,WATCH
+			</if>
+			<if test="outlook!=null and outlook!=''">
+				,OUTLOOK
+			</if>
+			<if test="issueNo!=null and issueNo!=''">
+				,ISSUE_NO
+			</if>
+			<if test="issueAmt!=null and issueAmt!=''">
+				,ISSUE_AMT
+			</if>
+			<if test="issueAmtTyp!=null and issueAmtTyp!=''">
+				,ISSUE_AMT_TYP
+			</if>
+			<if test="issueDate!=null and issueDate!=''">
+				,ISSUE_DATE
+			</if>
+			<if test="matuDate!=null and matuDate!=''">
+				,MATU_DATE
+			</if>
+			<if test="ruleDate!=null and ruleDate!=''">
+				,RULE_DATE
+			</if>
+			<if test="series!=null and series!=''">
+				,SERIES
+			</if>
+			<if test="exposeTyp!=null and exposeTyp!=''">
+				,EXPOSE_TYP
+			</if>
+			<if test="relCmpNm!=null and relCmpNm!=''">
+				,REL_CMP_NM
+			</if>
+				,CREA_DTME
+				,CREA_ID
+		)
+		VALUES
+		(
+			(SELECT NVL(MAX(SEQ)+1,1) FROM TSPPA97M)
+			,#{crprvid}
+			,#{rankConfDate}
+			,#{pubAnucDate}
+			,#{cmpCd}
+			,#{cmpNm}
+			,#{crTyp}
+			,#{secuTyp}
+			,#{bondTyp}
+			<if test="rank!=null and rank!=''">
+				,#{rank}
+			</if>
+			<if test="watch!=null and watch!=''">
+				,#{watch}
+			</if>
+			<if test="outlook!=null and outlook!=''">
+				,#{outlook}
+			</if>
+			<if test="issueNo!=null and issueNo!=''">
+				,#{issueNo}
+			</if>
+			<if test="issueAmt!=null and issueAmt!=''">
+				,#{issueAmt}
+			</if>
+			<if test="issueAmtTyp!=null and issueAmtTyp!=''">
+				,#{issueAmtTyp}
+			</if>
+			<if test="issueDate!=null and issueDate!=''">
+				,#{issueDate}
+			</if>
+			<if test="matuDate!=null and matuDate!=''">
+				,#{matuDate}
+			</if>
+			<if test="ruleDate!=null and ruleDate!=''">
+				,#{ruleDate}
+			</if>
+			<if test="series!=null and series!=''">
+				,#{series}
+			</if>
+			<if test="exposeTyp!=null and exposeTyp!=''">
+				,#{exposeTyp}
+			</if>
+			<if test="relCmpNm!=null and relCmpNm!=''">
+				,#{relCmpNm}
+			</if>
+				,SYSDATE
+				,#{creaId}
+		)
+   </insert>
+</mapper>
