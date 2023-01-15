@@ -18,6 +18,14 @@
     <router-link to="/databindingcheckbox2">Data Binding Checkbox2</router-link> |
     <router-link to="/databindingradio">Data Binding Radio</router-link> |
   </nav>
+  <nav>
+    <router-link to="/databindingattribute">Data Binding Attribute</router-link> |
+    <router-link to="/databindingbutton">Data Binding Button</router-link> |
+  </nav>
+  <nav>
+    <router-link to="/databindingclass">Data Binding Class</router-link> |
+    <router-link to="/databindingclass2">Data Binding Class2</router-link> |
+  </nav>
   <router-view/>
 </template>
 

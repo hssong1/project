@@ -53,3 +53,21 @@
     - 5.3.3.6 라디오
     - ![image](./5.3.3.7%20Form%20%EC%9E%85%EB%A0%A5%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EB%B0%94%EC%9D%B8%EB%94%A9%20Radio.png)
 
+- 5.3.4 속성
+    - 5.3.4.1 Img 객체의 src
+    - https://kr.vuejs.org/images/logo.png 이미지가 없어서 나오지 않음.
+    - ![image](./5.3.4.1%20Img%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20src.png)
+
+    - 5.3.4.2 button 객체의 disabled
+        - text가 비어있는 경우
+        - ![image](./5.3.4.2%20button%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20disabled_1.png)
+        - text가 있는 경우
+        - ![image](./5.3.4.2%20button%20%EA%B0%9D%EC%B2%B4%EC%9D%98%20disabled_2.png)
+
+- 5.3.5 클래스 바인딩
+    - 오브젝트 사용
+    - ![image](./5.3.5%20%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%B0%94%EC%9D%B8%EB%94%A9.png)
+    - 배열 사용
+    - ![image](./5.3.5%20%ED%81%B4%EB%9E%98%EC%8A%A4%20%EB%B0%94%EC%9D%B8%EB%94%A9_%EB%B0%B0%EC%97%B4.png)
+
+
